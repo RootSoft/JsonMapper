@@ -6,6 +6,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.11.0] - 2022-02-09
+### Changed
+- Merging of the property map is optimised with an early return if left side and right side are equal [PR#128](https://github.com/JsonMapper/JsonMapper/pull/128)
+### Fixed
+- Flex psr/log constraints [PR#129](https://github.com/JsonMapper/JsonMapper/pull/129)
+
+## [2.10.0] - 2022-01-16
+### Added
+- Support was added for strict scalar casting [PR#119](https://github.com/JsonMapper/JsonMapper/pull/119) Thanks to [template-provider](https://github.com/template-provider) for reporting the issue
+- All **Map** functions now return the mapped object(s) and uses [Psalm](https://psalm.dev) to assist with autocompletion. [PR#122](https://github.com/JsonMapper/JsonMapper/pull/122)
+### Fixed
+- Replace duplicates in middleware with object wrapper calls. [PR#123](https://github.com/JsonMapper/JsonMapper/pull/123)
+- Correct code style issues. [PR#124](https://github.com/JsonMapper/JsonMapper/pull/124)
+- Return empty array for union type with an array type when value is an empty array. [PR#126](https://github.com/JsonMapper/JsonMapper/pull/126) Thanks to [template-provider](https://github.com/template-provider) for reporting the issue
+
+## [2.9.1] - 2021-11-12
+### Fixed
+- Namespace resolving improved to include imports from parent classes [PR#117](https://github.com/JsonMapper/JsonMapper/pull/117) Thanks to [template-provider](https://github.com/template-provider) for reporting the issue
+
+## [2.9.0] - 2021-11-09
+### Added
+- The value transformation middleware was added to apply a callback to the values of the json object [PR#111](https://github.com/JsonMapper/JsonMapper/pull/111) Thanks to [Philipp Dahse](https://github.com/dahse89)
+- Introduce psalm annotations [PR#110](https://github.com/JsonMapper/JsonMapper/pull/110)
+### Fixed
+- Namespace resolving was strengthened to avoid partial matches and now also includes support for using `alias` in `use` statements [PR#112](https://github.com/JsonMapper/JsonMapper/pull/112) Thanks to [Christopher Reimer](https://github.com/CReimer)
+
 ## [2.8.0] - 2021-10-05
 ### Added
 - Support for PHP 8.1 Enum [PR#105](https://github.com/JsonMapper/JsonMapper/pull/105)

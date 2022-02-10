@@ -12,7 +12,7 @@ use JsonMapper\Wrapper\ObjectWrapper;
 
 class JsonMapper implements JsonMapperInterface
 {
-    /** @var callable */
+    /** @var callable|null */
     private $propertyMapper;
     /** @var NamedMiddleware[] */
     private $stack = [];
@@ -90,24 +90,24 @@ class JsonMapper implements JsonMapperInterface
         return $this;
     }
 
-    /** @param object $object */
-    public function mapObject(\stdClass $json, $object): void
+    public function mapObject(\stdClass $json, $object)
     {
         if (! \is_object($object)) {
-            throw TypeError::forObjectArgument(__METHOD__, $object, 2);
+            throw TypeError::forArgument(__METHOD__, 'object', $object, 2, '$object');
         }
 
         $propertyMap = new PropertyMap();
 
         $handler = $this->resolve();
         $handler($json, new ObjectWrapper($object), $propertyMap, $this);
+
+        return $object;
     }
 
-    /** @param object $object */
     public function mapArray(array $json, $object): array
     {
         if (! \is_object($object)) {
-            throw TypeError::forObjectArgument(__METHOD__, $object, 2);
+            throw TypeError::forArgument(__METHOD__, 'object', $object, 2, '$object');
         }
 
         $results = [];
@@ -119,11 +119,10 @@ class JsonMapper implements JsonMapperInterface
         return $results;
     }
 
-    /** @param object $object */
-    public function mapObjectFromString(string $json, $object): void
+    public function mapObjectFromString(string $json, $object)
     {
         if (! \is_object($object)) {
-            throw TypeError::forObjectArgument(__METHOD__, $object, 2);
+            throw TypeError::forArgument(__METHOD__, 'object', $object, 2, '$object');
         }
 
         $data = $this->decodeJsonString($json);
@@ -133,13 +132,14 @@ class JsonMapper implements JsonMapperInterface
         }
 
         $this->mapObject($data, $object);
+
+        return $object;
     }
 
-    /** @param object $object */
     public function mapArrayFromString(string $json, $object): array
     {
         if (! \is_object($object)) {
-            throw TypeError::forObjectArgument(__METHOD__, $object, 2);
+            throw TypeError::forArgument(__METHOD__, 'object', $object, 2, '$object');
         }
 
         $data = $this->decodeJsonString($json);
@@ -176,6 +176,9 @@ class JsonMapper implements JsonMapperInterface
     {
         if (!$this->cached) {
             $prev = $this->propertyMapper;
+            if (\is_null($prev)) {
+                throw new \RuntimeException('Property mapper has not been defined');
+            }
             foreach (\array_reverse($this->stack) as $namedMiddleware) {
                 $prev = $namedMiddleware->getMiddleware()($prev);
             }

@@ -10,14 +10,14 @@ class ObjectWrapper
 {
     /** @var object */
     private $object;
-    /** @var \ReflectionClass */
+    /** @var \ReflectionClass|null */
     private $reflectedObject;
 
     /** @param object $object */
     public function __construct($object)
     {
         if (! \is_object($object)) {
-            throw TypeError::forObjectArgument(__METHOD__, $object, 1);
+            throw TypeError::forArgument(__METHOD__, 'object', $object, 1, '$object');
         }
 
         $this->object = $object;
